@@ -11,10 +11,23 @@ import cloudinary from "../utils/cloudinary";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
+import Navbar from "@components/Navbar/Navbar";
+import NFTCard from "@components/NFTCard";
+import { useAddress, useContract, useOwnedNFTs } from "@thirdweb-dev/react";
+import {
+  MARKETPLACE_ADDRESS,
+  NFT_COLLECTION_ADDRESS,
+} from "@constants/addresses";
 
-const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
+const Home: NextPage = () => {
   const router = useRouter();
   const { photoId } = router.query;
+
+  const address = useAddress();
+
+  const { contract: nftContract } = useContract(NFT_COLLECTION_ADDRESS);
+  const { data } = useOwnedNFTs(nftContract, address);
+
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
 
   const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
@@ -30,7 +43,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   return (
     <>
       <Head>
-        <title>Next.js Conf 2022 Photos</title>
+        <title>NFT FUBU</title>
         <meta
           property="og:image"
           content="https://nextjsconf-pics.vercel.app/og-image.png"
@@ -40,10 +53,20 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           content="https://nextjsconf-pics.vercel.app/og-image.png"
         />
       </Head>
+
+      <Navbar />
+
       <main className="mx-auto max-w-[1960px] p-4">
         {photoId && (
           <Modal
-            images={images}
+            images={data?.map((nft, index) => ({
+              height: "100",
+              width: "100",
+              id: index,
+              format: "",
+              public_id: nft?.metadata?.id || "",
+              blurDataUrl: "",
+            }))}
             onClose={() => {
               setLastViewedPhoto(photoId);
             }}
@@ -55,10 +78,10 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               <span className="flex max-h-full max-w-full items-center justify-center">
                 <Bridge />
               </span>
-              <span className="absolute left-0 right-0 bottom-0 h-[400px] bg-gradient-to-b from-black/0 via-black to-black"></span>
+              <span className="absolute bottom-0 left-0 right-0 h-[400px] bg-gradient-to-b from-black/0 via-black to-black"></span>
             </div>
             <Logo />
-            <h1 className="mt-8 mb-4 text-base font-bold uppercase tracking-widest">
+            <h1 className="mb-4 mt-8 text-base font-bold uppercase tracking-widest">
               2022 Event Photos
             </h1>
             <p className="max-w-[40ch] text-white/75 sm:max-w-[32ch]">
@@ -74,16 +97,20 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               Clone and Deploy
             </a>
           </div>
-          {images.map(({ id, public_id, format, blurDataUrl }) => (
+          {data?.map((nft) => (
             <Link
-              key={id}
-              href={`/?photoId=${id}`}
-              as={`/p/${id}`}
-              ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
+              key={nft?.metadata?.id}
+              href={`/?photoId=${nft?.metadata?.id}`}
+              as={`/p/${nft?.metadata?.id}`}
+              ref={
+                nft?.metadata?.id === lastViewedPhoto
+                  ? lastViewedPhotoRef
+                  : null
+              }
               shallow
               className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
             >
-              <Image
+              {/* <Image
                 alt="Next.js Conf photo"
                 className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
                 style={{ transform: "translate3d(0, 0, 0)" }}
@@ -96,11 +123,13 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
                   (max-width: 1280px) 50vw,
                   (max-width: 1536px) 33vw,
                   25vw"
-              />
+              /> */}
+              <NFTCard key={nft.metadata.id} nft={nft} />
             </Link>
           ))}
         </div>
       </main>
+
       <footer className="p-6 text-center text-white/80 sm:p-12">
         Thank you to{" "}
         <a
@@ -137,38 +166,38 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
 export default Home;
 
-export async function getStaticProps() {
-  const results = await cloudinary.v2.search
-    .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-    .sort_by("public_id", "desc")
-    .max_results(400)
-    .execute();
-  let reducedResults: ImageProps[] = [];
+// export async function getStaticProps() {
+//   const results = await cloudinary.v2.search
+//     .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
+//     .sort_by("public_id", "desc")
+//     .max_results(400)
+//     .execute();
+//   let reducedResults: ImageProps[] = [];
 
-  let i = 0;
-  for (let result of results.resources) {
-    reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-    });
-    i++;
-  }
+//   let i = 0;
+//   for (let result of results.resources) {
+//     reducedResults.push({
+//       id: i,
+//       height: result.height,
+//       width: result.width,
+//       public_id: result.public_id,
+//       format: result.format,
+//     });
+//     i++;
+//   }
 
-  const blurImagePromises = results.resources.map((image: ImageProps) => {
-    return getBase64ImageUrl(image);
-  });
-  const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
+//   const blurImagePromises = results.resources.map((image: ImageProps) => {
+//     return getBase64ImageUrl(image);
+//   });
+//   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
 
-  for (let i = 0; i < reducedResults.length; i++) {
-    reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
-  }
+//   for (let i = 0; i < reducedResults.length; i++) {
+//     reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
+//   }
 
-  return {
-    props: {
-      images: reducedResults,
-    },
-  };
-}
+//   return {
+//     props: {
+//       images: reducedResults,
+//     },
+//   };
+// }
