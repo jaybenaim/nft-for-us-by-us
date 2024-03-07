@@ -1,6 +1,6 @@
-import Modal from "@components/Modal";
-import NFTCard from "@components/NFTCard";
-import Skeleton from "@components/Skeleton";
+import NFTCard from "@components/Atoms/NFTCard/NFTCard";
+import Skeleton from "@components/Atoms/Skeleton";
+import Modal from "@components/Organisms/Modal";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { useAddress, useContract, useOwnedNFTs } from "@thirdweb-dev/react";
 import Image from "next/image";
@@ -29,6 +29,7 @@ const Dashboard = () => {
       setLastViewedPhoto(null);
     }
   }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
+
   return (
     <main className="mx-auto max-w-[1960px] p-4">
       {photoId && (
@@ -56,13 +57,16 @@ const Dashboard = () => {
                 src="/face-outline.svg"
                 layout="fill"
                 objectFit="cover"
+                priority
               />
             </span>
             <span className="absolute bottom-0 left-0 right-0 h-[400px] bg-gradient-to-b from-black/0 via-black to-black"></span>
           </div>
+
           <h1 className="mb-4 mt-8 text-base font-bold uppercase tracking-widest">
             What can you create?
           </h1>
+
           <p className="max-w-[40ch] text-white/75 sm:max-w-[32ch]">
             NFT's created by us, sold by us.
           </p>

@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Carousel from "../../components/Carousel";
+import Carousel from "../../components/Organisms/Carousel";
 import getResults from "../../utils/cachedImages";
 import cloudinary from "../../utils/cloudinary";
 import getBase64ImageUrl from "../../utils/generateBlurPlaceholder";
@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   const currentPhoto = reducedResults.find(
-    (img) => img.id === Number(context.params.photoId),
+    (img) => img.id === Number(context.params.photoId)
   );
   currentPhoto.blurDataUrl = await getBase64ImageUrl(currentPhoto);
 

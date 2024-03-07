@@ -40,15 +40,10 @@ const NFTCard = ({ nft }: IProps) => {
           className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
           width="720"
           height="480"
-          //   sizes="(max-width: 640px) 100vw,
-          //        (max-width: 1280px) 50vw,
-          //        (max-width: 1536px) 33vw,
-          //        25vw"
         />
       </div>
       <p>Token ID #{nft.metadata.id}</p>
       <p>{nft.metadata.name}</p>
-
       <div>
         {loadingMarketplace || loadingDirectListing || loadingAuction ? (
           <p>Loading...</p>

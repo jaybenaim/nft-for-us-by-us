@@ -1,5 +1,5 @@
-import Dashboard from "@components/Dashboard/Dashboard";
-import Navbar from "@components/Navbar/Navbar";
+import Dashboard from "@components/Dashboard";
+import Navbar from "@components/Organisms/Navbar";
 import type { NextPage } from "next";
 import Head from "next/head";
 
