@@ -1,4 +1,4 @@
-import NFTCard from "@components/Atoms/NFTCard/NFTCard";
+import NFTCard from "@components/Atoms/NFTCard";
 import Skeleton from "@components/Atoms/Skeleton";
 import Modal from "@components/Organisms/Modal";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
