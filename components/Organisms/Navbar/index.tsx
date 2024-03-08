@@ -6,6 +6,7 @@ import { Fragment } from "react";
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Market", href: "/shop", current: false },
+  { name: "Sell", href: "/sell", current: false },
   { name: "My NFT's", href: "/my-shop", current: false },
 ];
 

@@ -1,8 +1,9 @@
 import NFTGrid from "@components/Molecules/NFTGrid";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { useContract, useNFTs } from "@thirdweb-dev/react";
+import { NextPage } from "next";
 
-const Buy = () => {
+const Buy: NextPage = () => {
   const { contract } = useContract(NFT_COLLECTION_ADDRESS);
   const { data, isLoading } = useNFTs(contract);
 

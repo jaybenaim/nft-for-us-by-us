@@ -9,7 +9,7 @@ import {
   useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import { useState } from "react";
-import TextInput from "../Input";
+import Input from "../Inputs/Input";
 
 interface IProps {
   nft: NFT;
@@ -106,7 +106,7 @@ const NFTMetadata = ({ nft }: IProps) => {
               <p>
                 {`${auctionListing[0]?.minimumBidCurrencyValue.displayValue} ${auctionListing[0]?.minimumBidCurrencyValue.symbol}`}
               </p>
-              <TextInput
+              <Input
                 id="bid"
                 label="Bid"
                 value={bidValue}
