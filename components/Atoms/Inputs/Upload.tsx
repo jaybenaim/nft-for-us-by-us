@@ -4,9 +4,10 @@ interface IProps {
   id: string;
   label: string;
   placeholder?: string;
+  handleOnChange: (files: FileList) => void;
 }
 
-const Upload = ({ label, id }: IProps) => {
+const Upload = ({ label, id, handleOnChange }: IProps) => {
   return (
     <div className="col-span-full">
       <label
@@ -27,7 +28,13 @@ const Upload = ({ label, id }: IProps) => {
               className="relative cursor-pointer rounded-md bg-white px-4 font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
             >
               <span>Upload a file</span>
-              <input id={id} name={id} type="file" className="sr-only" />
+              <input
+                id={id}
+                name={id}
+                type="file"
+                className="sr-only"
+                onChange={({ target: { files } }) => handleOnChange(files)}
+              />
             </label>
             <p className="pl-2">or drag and drop</p>
           </div>

@@ -9,6 +9,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <ThirdwebProvider
       activeChain={ChainId.Mumbai}
       clientId={process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID}
+      secretKey={process.env.NEXT_PUBLIC_THIRD_WEB_SECRET_KEY}
     >
       <AuthProvider>
         <Layout>

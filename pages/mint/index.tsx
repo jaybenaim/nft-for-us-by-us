@@ -1,4 +1,4 @@
-import SellNFTForm from "@components/Molecules/SellNFTForm";
+import SellNFTForm from "@components/Molecules/MintNFTForm";
 import { NextPage } from "next";
 
 const Sell: NextPage = () => {

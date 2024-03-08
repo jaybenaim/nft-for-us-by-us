@@ -5,6 +5,7 @@ import {
 import {
   NFT,
   useContract,
+  useCreateDirectListing,
   useValidDirectListings,
   useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
@@ -19,6 +20,14 @@ const NFTMetadata = ({ nft }: IProps) => {
   const { contract: marketplace, isLoading: loadingMarketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
+  );
+
+  const { mutateAsync: createDirectListing } =
+    useCreateDirectListing(marketplace);
+
+  const { contract: nftCollection } = useContract(
+    NFT_COLLECTION_ADDRESS,
+    "nft-collection"
   );
 
   const { data: directListing, isLoading: loadingDirectListing } =
@@ -76,6 +85,31 @@ const NFTMetadata = ({ nft }: IProps) => {
       throw new Error("No listing found");
     }
     return txResult;
+  };
+
+  const checkAndProvideApproval = async () => {
+    const ownerId = await nftCollection.owner.get();
+    const hasApproval = await nftCollection?.call(
+      "isApprovedForAll",
+      ownerId as any,
+      MARKETPLACE_ADDRESS as any
+    );
+
+    if (hasApproval) console.log("Approval provided");
+
+    if (!hasApproval) {
+      const txResult = await nftCollection?.call(
+        "setApprovalForAll",
+        MARKETPLACE_ADDRESS as any,
+        true as any
+      );
+
+      if (txResult) {
+        console.log("Approval provided");
+      }
+    }
+
+    return true;
   };
 
   return (
