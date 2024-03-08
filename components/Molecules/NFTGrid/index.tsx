@@ -1,3 +1,15 @@
+import NFTCard from "@components/Atoms/NFTCard";
+import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
+import { NFT } from "@thirdweb-dev/react";
+import Link from "next/link";
+
+interface IProps {
+  isLoading: boolean;
+  data: NFT[];
+  overrideOnclickBehavior?: (nft: NFT) => void;
+  emptyText?: string;
+}
+
 const NFTGrid = ({
   isLoading,
   data,
@@ -9,20 +21,20 @@ const NFTGrid = ({
       {isLoading ? (
         <p>Loading...</p>
       ) : data && data.length > 0 ? (
-        data.map((nft) =>
+        [...data, ...data].map((nft) =>
           !overrideOnclickBehavior ? (
             <Link
               href={`/token/${NFT_COLLECTION_ADDRESS}/${nft.metadata.id}`}
               key={nft.metadata.id}
             >
-              <NFT nft={nft} />
+              <NFTCard nft={nft} imgOnly={false} />
             </Link>
           ) : (
             <div
               key={nft.metadata.id}
               onClick={() => overrideOnclickBehavior(nft)}
             >
-              <NFT nft={nft} />
+              <NFTCard nft={nft} imgOnly={false} />
             </div>
           )
         )
