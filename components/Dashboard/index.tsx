@@ -81,13 +81,12 @@ const Dashboard = () => {
         {data?.map((nft) => (
           <Link
             key={nft?.metadata?.id}
-            href={`/?photoId=${nft?.metadata?.id}`}
-            as={`/p/${nft?.metadata?.id}`}
+            href={`/view/${nft?.metadata?.id}`}
             ref={
               nft?.metadata?.id === lastViewedPhoto ? lastViewedPhotoRef : null
             }
             shallow
-            className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
+            className="after:content group relative mb-5 block w-full after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
           >
             <NFTCard key={nft.metadata.id} nft={nft} />
           </Link>

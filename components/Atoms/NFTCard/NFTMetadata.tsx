@@ -1,15 +1,17 @@
+import CreateListingForm from "@components/Molecules/CreateListingForm";
+import DefaultModal from "@components/Organisms/Modal/DefaultModal";
 import {
   MARKETPLACE_ADDRESS,
   NFT_COLLECTION_ADDRESS,
 } from "@constants/addresses";
 import {
   NFT,
+  useAddress,
   useContract,
-  useCreateDirectListing,
   useValidDirectListings,
   useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../Inputs/Input";
 
 interface IProps {
@@ -17,13 +19,11 @@ interface IProps {
 }
 
 const NFTMetadata = ({ nft }: IProps) => {
+  const address = useAddress();
   const { contract: marketplace, isLoading: loadingMarketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
   );
-
-  const { mutateAsync: createDirectListing } =
-    useCreateDirectListing(marketplace);
 
   const { contract: nftCollection } = useContract(
     NFT_COLLECTION_ADDRESS,
@@ -43,6 +43,8 @@ const NFTMetadata = ({ nft }: IProps) => {
     });
 
   const [bidValue, setBidValue] = useState(0);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [openCreateListing, setOpenCreateListing] = useState<boolean>(false);
 
   const handleBuyListing = async () => {
     let txResult;
@@ -87,30 +89,15 @@ const NFTMetadata = ({ nft }: IProps) => {
     return txResult;
   };
 
-  const checkAndProvideApproval = async () => {
-    const ownerId = await nftCollection.owner.get();
-    const hasApproval = await nftCollection?.call(
-      "isApprovedForAll",
-      ownerId as any,
-      MARKETPLACE_ADDRESS as any
-    );
+  const checkOwnership = async () => {
+    const isOwner = nft.owner === address;
 
-    if (hasApproval) console.log("Approval provided");
-
-    if (!hasApproval) {
-      const txResult = await nftCollection?.call(
-        "setApprovalForAll",
-        MARKETPLACE_ADDRESS as any,
-        true as any
-      );
-
-      if (txResult) {
-        console.log("Approval provided");
-      }
-    }
-
-    return true;
+    setIsOwner(!!isOwner);
   };
+
+  useEffect(() => {
+    checkOwnership();
+  }, [nft]);
 
   return (
     <>
@@ -132,7 +119,12 @@ const NFTMetadata = ({ nft }: IProps) => {
               <p>
                 {`${directListing[0]?.currencyValuePerToken.displayValue} ${directListing[0]?.currencyValuePerToken.symbol}`}
               </p>
-              <button onClick={() => handleBuyListing()}>Buy</button>
+              <button
+                onClick={() => handleBuyListing()}
+                className="mt-4 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
+              >
+                Buy
+              </button>
             </div>
           ) : auctionListing && auctionListing[0] ? (
             <div>
@@ -148,6 +140,7 @@ const NFTMetadata = ({ nft }: IProps) => {
                 min={0}
                 max={1000000}
                 step={1}
+                handleOnChange={(value: number) => setBidValue(value)}
                 placeholder="Enter your bid"
               />
               <button onClick={() => handleCreateBid()}>Bid</button>
@@ -158,6 +151,29 @@ const NFTMetadata = ({ nft }: IProps) => {
               <p>Not Listed</p>
             </div>
           )}
+
+          {/* Modal is closed */}
+          {isOwner &&
+            !directListing &&
+            !auctionListing &&
+            !openCreateListing && (
+              <button
+                className="mt-4 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
+                onClick={() => setOpenCreateListing(true)}
+              >
+                Create Direct Listing
+              </button>
+            )}
+
+          {/* Modal is open */}
+          {isOwner &&
+            !directListing &&
+            !auctionListing &&
+            openCreateListing && (
+              <DefaultModal handleClose={() => setOpenCreateListing(false)}>
+                <CreateListingForm nft={nft} />
+              </DefaultModal>
+            )}
         </div>
       </div>
     </>

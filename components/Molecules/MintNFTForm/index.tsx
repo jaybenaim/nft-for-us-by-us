@@ -12,13 +12,12 @@ import {
   NFT,
   Web3Button,
   useContract,
-  useCreateDirectListing,
   useResolvedMediaType,
 } from "@thirdweb-dev/react";
 import { ThirdwebStorage } from "@thirdweb-dev/storage";
-import moment from "moment";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import CreateListingForm from "../CreateListingForm";
 
 const storage = new ThirdwebStorage({
   clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID,
@@ -31,24 +30,10 @@ const SellNFTForm = () => {
     "marketplace-v3"
   );
 
-  const { mutateAsync: createDirectListing } =
-    useCreateDirectListing(marketplace);
-
   const { contract: nftCollection } = useContract(
     NFT_COLLECTION_ADDRESS,
     "nft-collection"
   );
-
-  //   const { register: registerDirect, handleSubmit: handleSubmitDirect } =
-  //     useForm<DirectFormData>({
-  //       defaultValues: {
-  //         nftContractAddress: NFT_COLLECTION_ADDRESS,
-  //         tokenId: nft.metadata.id,
-  //         price: "0",
-  //         startDate: new Date(),
-  //         endDate: new Date(),
-  //       },
-  //     });
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -68,7 +53,7 @@ const SellNFTForm = () => {
     const uri = await storage.upload(files[0]);
 
     if (uri) {
-      const result = await storage.download(uri);
+      await storage.download(uri);
       setImageUri(uri);
       setLoading(false);
     }
@@ -115,70 +100,12 @@ const SellNFTForm = () => {
               />
             </div>
 
-            <div className="sm:col-span-3">
-              <Input
-                label="Token id"
-                id="tokenId"
-                handleOnChange={(value: string) => setTokenId(value)}
-                value={tokenId}
-              />
-            </div>
-
             <div className="sm:col-span-full">
               <Textarea
                 label="Description"
                 id="description"
                 handleOnChange={(value: string) => setDescription(value)}
                 value={description}
-              />
-            </div>
-
-            <div className="sm:col-span-2">
-              <Input
-                label="Start Date"
-                id="startDate"
-                type="date"
-                min={moment().format("YYYY-MM-DD")}
-                max={moment().add(100, "years").format("YYYY-MM-DD")}
-                handleOnChange={(value: string) => setStartDate(value)}
-                value={startDate}
-              />
-            </div>
-
-            <div className="sm:col-span-2">
-              {" "}
-              <Input
-                label="End Date"
-                id="endDate"
-                type="date"
-                min={moment().format("YYYY-MM-DD")}
-                max={moment().add(100, "years").format("YYYY-MM-DD")}
-                handleOnChange={(value: string) => setEndDate(value)}
-                value={endDate}
-              />
-            </div>
-
-            <div className="col-span-2 sm:col-start-1">
-              <Input
-                label="Price"
-                id="price"
-                type="number"
-                min={0}
-                max={100000}
-                handleOnChange={(value: number) => setPrice(value)}
-                value={price}
-              />
-            </div>
-
-            <div className="col-span-2">
-              <Input
-                label="Qty"
-                id="qty"
-                type="number"
-                min={0}
-                max={100000}
-                handleOnChange={(value: number) => setQty(value)}
-                value={qty}
               />
             </div>
           </div>
@@ -215,20 +142,10 @@ const SellNFTForm = () => {
       </div>
 
       {nft && <NFTCard nft={nft} />}
+
+      <CreateListingForm nft={nft} />
     </div>
   );
 };
 
 export default SellNFTForm;
-
-// export const getStaticProps: GetStaticProps = async (ctx) => {
-//   const storage = new ThirdwebStorage({
-//     secretKey: process.env.NEXT_PUBLIC_THIRD_WEB_SECRET_KEY,
-//   });
-
-//   return {
-//     props: {
-//       storage,
-//     },
-//   };
-// };
