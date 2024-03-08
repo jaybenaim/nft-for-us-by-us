@@ -92,9 +92,6 @@ const SellNFTForm = () => {
                 handleOnChange={(value: string) => setName(value)}
                 value={name}
               />
-            </div>
-
-            <div className="sm:col-span-full">
               <Textarea
                 label="Description"
                 id="description"
@@ -102,31 +99,31 @@ const SellNFTForm = () => {
                 value={description}
               />
             </div>
-          </div>
-        </div>
 
-        <div className="sm:col-span-3">
-          {loading && <Spinner />}
-
-          {url ? (
-            <div>
-              <label
-                htmlFor="upload-preview"
-                className="block text-sm font-medium leading-6 text-white"
-              >
-                Preview
-              </label>
-              <MediaRenderer src={url} />
-            </div>
-          ) : (
             <div className="sm:col-span-3">
-              <Upload
-                label="Upload your Image"
-                id="img-upload"
-                handleOnChange={(files) => uploadImage(files)}
-              />
+              {loading && <Spinner />}
+
+              {url ? (
+                <div>
+                  <label
+                    htmlFor="upload-preview"
+                    className="block text-sm font-medium leading-6 text-white"
+                  >
+                    Preview
+                  </label>
+                  <MediaRenderer src={url} />
+                </div>
+              ) : (
+                <div className="sm:col-span-3">
+                  <Upload
+                    label="Upload your Image"
+                    id="img-upload"
+                    handleOnChange={(files) => uploadImage(files)}
+                  />
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
 
