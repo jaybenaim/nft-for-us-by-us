@@ -1,8 +1,8 @@
-import Modal from "@components/Modal";
-import NFTCard from "@components/NFTCard";
-import Skeleton from "@components/Skeleton";
+import NFTCard from "@components/Atoms/NFTCard";
+import Skeleton from "@components/Atoms/Skeleton";
+import Modal from "@components/Organisms/Modal";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
-import { useAddress, useContract, useOwnedNFTs } from "@thirdweb-dev/react";
+import { useContract, useNFTs } from "@thirdweb-dev/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,10 +13,8 @@ const Dashboard = () => {
   const router = useRouter();
   const { photoId } = router.query;
 
-  const address = useAddress();
-
   const { contract: nftContract } = useContract(NFT_COLLECTION_ADDRESS);
-  const { data, isLoading } = useOwnedNFTs(nftContract, address);
+  const { data, isLoading } = useNFTs(nftContract);
 
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
 
@@ -29,6 +27,7 @@ const Dashboard = () => {
       setLastViewedPhoto(null);
     }
   }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
+
   return (
     <main className="mx-auto max-w-[1960px] p-4">
       {photoId && (
@@ -56,13 +55,16 @@ const Dashboard = () => {
                 src="/face-outline.svg"
                 layout="fill"
                 objectFit="cover"
+                priority
               />
             </span>
             <span className="absolute bottom-0 left-0 right-0 h-[400px] bg-gradient-to-b from-black/0 via-black to-black"></span>
           </div>
+
           <h1 className="mb-4 mt-8 text-base font-bold uppercase tracking-widest">
             What can you create?
           </h1>
+
           <p className="max-w-[40ch] text-white/75 sm:max-w-[32ch]">
             NFT's created by us, sold by us.
           </p>
@@ -79,13 +81,12 @@ const Dashboard = () => {
         {data?.map((nft) => (
           <Link
             key={nft?.metadata?.id}
-            href={`/?photoId=${nft?.metadata?.id}`}
-            as={`/p/${nft?.metadata?.id}`}
+            href={`/view/${nft?.metadata?.id}`}
             ref={
               nft?.metadata?.id === lastViewedPhoto ? lastViewedPhotoRef : null
             }
             shallow
-            className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
+            className="after:content group relative mb-5 block w-full after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
           >
             <NFTCard key={nft.metadata.id} nft={nft} />
           </Link>
