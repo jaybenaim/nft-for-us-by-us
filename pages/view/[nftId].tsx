@@ -36,7 +36,7 @@ const NFTDetail: NextPage = () => {
             </div>
 
             <div>
-              <NFTMetadata nft={nft} />
+              <NFTMetadata nft={nft} includeCreateDLBtns />
             </div>
           </div>
         )}

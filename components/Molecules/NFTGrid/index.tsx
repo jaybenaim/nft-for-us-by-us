@@ -16,9 +16,9 @@ const NFTGrid = ({
   emptyText = "No NFTs found",
 }: IProps) => {
   return (
-    <div>
+    <>
       {isLoading ? (
-        <p>Loading...</p>
+        <div />
       ) : data && data.length > 0 ? (
         data.map((nft) =>
           !overrideOnclickBehavior ? (
@@ -26,18 +26,18 @@ const NFTGrid = ({
               <NFTCard nft={nft} imgOnly={false} />
             </Link>
           ) : (
-            <div
+            <button
               key={nft.metadata.id}
               onClick={() => overrideOnclickBehavior(nft)}
             >
               <NFTCard nft={nft} imgOnly={false} />
-            </div>
+            </button>
           )
         )
       ) : (
         <p>{emptyText}</p>
       )}
-    </div>
+    </>
   );
 };
 

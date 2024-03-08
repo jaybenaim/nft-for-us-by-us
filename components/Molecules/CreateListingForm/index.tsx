@@ -11,19 +11,22 @@ import {
   useCreateDirectListing,
 } from "@thirdweb-dev/react";
 import moment from "moment";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface IProps {
   nft: NFT;
 }
 
 const CreateListingForm = ({ nft }: IProps) => {
+  const router = useRouter();
   const { contract: marketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
   );
 
-  const { mutateAsync: createDirectListing } =
+  const { mutateAsync: createDirectListing, isSuccess } =
     useCreateDirectListing(marketplace);
 
   const { contract: nftCollection } = useContract(
@@ -63,19 +66,29 @@ const CreateListingForm = ({ nft }: IProps) => {
   };
 
   const handleCreateDirectListing = async () => {
-    await checkAndProvideApproval();
+    try {
+      await checkAndProvideApproval();
 
-    createDirectListing({
-      assetContractAddress: NFT_COLLECTION_ADDRESS,
-      tokenId: nft.metadata.id,
-      pricePerToken: price,
-      currencyContractAddress: NATIVE_TOKEN_ADDRESS,
-      isReservedListing: false,
-      quantity: `${qty}`,
-      startTimestamp: new Date(startDate),
-      endTimestamp: new Date(endDate),
-    });
+      createDirectListing({
+        assetContractAddress: NFT_COLLECTION_ADDRESS,
+        tokenId: nft.metadata.id,
+        pricePerToken: price,
+        currencyContractAddress: NATIVE_TOKEN_ADDRESS,
+        isReservedListing: false,
+        quantity: `${qty}`,
+        startTimestamp: new Date(startDate),
+        endTimestamp: new Date(endDate),
+      });
+
+      router.push(`/view/${nft.metadata.id}`);
+    } catch (err) {
+      console.log("Error creating direct listing", err);
+    }
   };
+
+  useEffect(() => {
+    isSuccess && toast.success("Created direct listing");
+  }, [isSuccess]);
 
   return (
     <div>

@@ -37,11 +37,6 @@ const SellNFTForm = () => {
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [tokenId, setTokenId] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [qty, setQty] = useState<number>(1);
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
   const [imageUri, setImageUri] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [nft, setNft] = useState<NFT | null>(null);
@@ -60,9 +55,7 @@ const SellNFTForm = () => {
   };
 
   const formIsValid = () => {
-    return [name, price, qty, description, tokenId, startDate, endDate].every(
-      (i) => i
-    );
+    return [name, description].every((i) => i);
   };
 
   const createNFT = async () => {
@@ -76,7 +69,8 @@ const SellNFTForm = () => {
 
     setNft(nft);
 
-    router.push(`/view/${minted.id}`);
+    router.push("/mint#createDirectListing");
+    // Todo alert
   };
 
   return (
@@ -111,15 +105,29 @@ const SellNFTForm = () => {
           </div>
         </div>
 
-        {loading && <Spinner />}
+        <div className="sm:col-span-3">
+          {loading && <Spinner />}
 
-        {url && <MediaRenderer src={url} />}
-
-        <Upload
-          label="Upload your Image"
-          id="img-upload"
-          handleOnChange={(files) => uploadImage(files)}
-        />
+          {url ? (
+            <div>
+              <label
+                htmlFor="upload-preview"
+                className="block text-sm font-medium leading-6 text-white"
+              >
+                Preview
+              </label>
+              <MediaRenderer src={url} />
+            </div>
+          ) : (
+            <div className="sm:col-span-3">
+              <Upload
+                label="Upload your Image"
+                id="img-upload"
+                handleOnChange={(files) => uploadImage(files)}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
@@ -141,9 +149,18 @@ const SellNFTForm = () => {
         </Web3Button>
       </div>
 
-      {nft && <NFTCard nft={nft} />}
+      {nft && (
+        <section
+          id="#createDirectListing"
+          className="space-y-12 rounded-lg bg-gray-300/10 p-8"
+        >
+          <div className="max-w-md">
+            <NFTCard nft={nft} />
+          </div>
 
-      <CreateListingForm nft={nft} />
+          <CreateListingForm nft={nft} />
+        </section>
+      )}
     </div>
   );
 };

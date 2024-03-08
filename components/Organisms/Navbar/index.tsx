@@ -1,16 +1,33 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { EmbeddedWallet, useWallet } from "@thirdweb-dev/react";
 import cx from "classnames";
+import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Market", href: "/shop", current: false },
-  { name: "Mint", href: "/mint", current: false },
-  { name: "My NFT's", href: "/my-shop", current: false },
-];
-
 const Navbar = () => {
+  const pathname = usePathname();
+  const activeWallet = useWallet();
+
+  const navigation = [
+    {
+      name: "Home",
+      href: "/",
+      current: pathname.includes("home") || pathname.includes("view"),
+    },
+    { name: "Market", href: "/market", current: pathname.includes("market") },
+    { name: "Mint", href: "/mint", current: pathname.includes("mint") },
+    {
+      name: "My NFT's",
+      href: "/my-shop",
+      current: pathname.includes("my-shop"),
+    },
+  ];
+
+  const logout = async () => {
+    await (activeWallet as EmbeddedWallet).disconnect();
+  };
+
   return (
     <Disclosure as="nav" className="bg-black">
       {({ open }) => (
@@ -117,6 +134,7 @@ const Navbar = () => {
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
+                            onClick={() => logout()}
                           >
                             Sign out
                           </a>

@@ -75,6 +75,10 @@ const Dashboard = () => {
             <Skeleton />
 
             <Skeleton />
+
+            <Skeleton />
+
+            <Skeleton />
           </div>
         )}
 

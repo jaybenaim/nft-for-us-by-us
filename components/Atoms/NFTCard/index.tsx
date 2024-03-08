@@ -1,4 +1,4 @@
-import { NFT, ThirdwebNftMedia } from "@thirdweb-dev/react";
+import { NFT } from "@thirdweb-dev/react";
 import NFTMetadata from "./NFTMetadata";
 
 interface IProps {
@@ -8,26 +8,16 @@ interface IProps {
 
 const NFTCard = ({ nft, imgOnly = true }: IProps) => {
   return (
-    <div className=" text-white">
-      {imgOnly ? (
-        <ThirdwebNftMedia
-          metadata={nft.metadata}
-          className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
-          width="720"
-          height="480"
+    <div className="group relative">
+      <div className="aspect-h-1 aspect-w-1 lg:aspect-none flex w-full justify-center overflow-hidden rounded-t-md bg-zinc-900 lg:h-72">
+        <img
+          src={nft.metadata.image}
+          alt={nft.metadata.description}
+          className="h-full w-full object-cover object-center transition-all duration-300 will-change-auto group-hover:scale-105 lg:h-full lg:w-full"
         />
-      ) : (
-        <div className="max-w-sm overflow-hidden rounded shadow-lg">
-          <ThirdwebNftMedia
-            metadata={nft.metadata}
-            className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
-            width="720"
-            height="480"
-          />
+      </div>
 
-          <NFTMetadata nft={nft} />
-        </div>
-      )}
+      {!imgOnly && <NFTMetadata nft={nft} />}
     </div>
   );
 };
