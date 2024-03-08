@@ -1,5 +1,4 @@
 import NFTCard from "@components/Atoms/NFTCard";
-import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { NFT } from "@thirdweb-dev/react";
 import Link from "next/link";
 
@@ -23,10 +22,7 @@ const NFTGrid = ({
       ) : data && data.length > 0 ? (
         [...data, ...data].map((nft) =>
           !overrideOnclickBehavior ? (
-            <Link
-              href={`/token/${NFT_COLLECTION_ADDRESS}/${nft.metadata.id}`}
-              key={nft.metadata.id}
-            >
+            <Link href={`/view/${nft.metadata.id}`} key={nft.metadata.id}>
               <NFTCard nft={nft} imgOnly={false} />
             </Link>
           ) : (

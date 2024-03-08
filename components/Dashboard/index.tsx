@@ -2,7 +2,7 @@ import NFTCard from "@components/Atoms/NFTCard";
 import Skeleton from "@components/Atoms/Skeleton";
 import Modal from "@components/Organisms/Modal";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
-import { useAddress, useContract, useOwnedNFTs } from "@thirdweb-dev/react";
+import { useContract, useNFTs } from "@thirdweb-dev/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,10 +13,8 @@ const Dashboard = () => {
   const router = useRouter();
   const { photoId } = router.query;
 
-  const address = useAddress();
-
   const { contract: nftContract } = useContract(NFT_COLLECTION_ADDRESS);
-  const { data, isLoading } = useOwnedNFTs(nftContract, address);
+  const { data, isLoading } = useNFTs(nftContract);
 
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
 
