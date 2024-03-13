@@ -1,4 +1,5 @@
 import Input from "@components/Atoms/Inputs/Input";
+import Spinner from "@components/Icons/Spinner";
 import {
   MARKETPLACE_ADDRESS,
   NFT_COLLECTION_ADDRESS,
@@ -26,8 +27,11 @@ const CreateListingForm = ({ nft }: IProps) => {
     "marketplace-v3"
   );
 
-  const { mutateAsync: createDirectListing, isSuccess } =
-    useCreateDirectListing(marketplace);
+  const {
+    mutateAsync: createDirectListing,
+    isSuccess,
+    isError,
+  } = useCreateDirectListing(marketplace);
 
   const { contract: nftCollection } = useContract(
     NFT_COLLECTION_ADDRESS,
@@ -38,6 +42,7 @@ const CreateListingForm = ({ nft }: IProps) => {
   const [qty, setQty] = useState<number>(1);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const formIsValid = () => {
     return [price, qty, startDate, endDate].every((i) => i);
@@ -66,29 +71,41 @@ const CreateListingForm = ({ nft }: IProps) => {
   };
 
   const handleCreateDirectListing = async () => {
+    setIsLoading(true);
     try {
       await checkAndProvideApproval();
 
       createDirectListing({
         assetContractAddress: NFT_COLLECTION_ADDRESS,
         tokenId: nft.metadata.id,
-        pricePerToken: price,
+        pricePerToken: `${price}`,
         currencyContractAddress: NATIVE_TOKEN_ADDRESS,
         isReservedListing: false,
         quantity: `${qty}`,
         startTimestamp: new Date(startDate),
         endTimestamp: new Date(endDate),
       });
-
-      router.push(`/view/${nft.metadata.id}`);
     } catch (err) {
-      console.log("Error creating direct listing", err);
+      setIsLoading(false);
+      toast.error("Failed to create direct listing");
+      throw new Error("Error creating direct listing");
     }
   };
 
   useEffect(() => {
-    isSuccess && toast.success("Created direct listing");
+    if (isSuccess) {
+      toast.success("Created direct listing");
+      setIsLoading(false);
+      router.push(`/view/${nft.metadata.id}`);
+    }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Direct listing failed");
+      setIsLoading(false);
+    }
+  }, [isError]);
 
   return (
     <div>
@@ -156,6 +173,7 @@ const CreateListingForm = ({ nft }: IProps) => {
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
+        {isLoading && <Spinner />}
         <Web3Button
           type="submit"
           className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"

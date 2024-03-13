@@ -4,6 +4,7 @@ import {
 } from "@constants/addresses";
 import {
   NFT,
+  useAddress,
   useContract,
   useValidDirectListings,
   useValidEnglishAuctions,
@@ -16,6 +17,8 @@ interface IProps {
 }
 
 const NFTMetadata = ({ nft, includeDescription = false }: IProps) => {
+  const address = useAddress();
+
   const { contract: marketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
@@ -46,22 +49,32 @@ const NFTMetadata = ({ nft, includeDescription = false }: IProps) => {
     }
   }, [directListing]);
 
+  const isOwner = nft?.owner === address;
+
   return (
-    <div className="rounded-b-lg bg-zinc-900 p-4">
+    <div className="h-28 rounded-b-lg bg-zinc-900 p-4">
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-primary/90">
+        <h3 className="text-sm font-bold text-gray-700 dark:text-primary/90">
           {nft.metadata.name} #{nft.metadata.id}
         </h3>
 
         {includeDescription && (
-          <p className="mt-2 text-sm font-bold text-gray-900 dark:text-primary">
+          <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-primary">
             {nft.metadata.description}
           </p>
         )}
 
-        <p className="mt-2 text-sm font-bold text-gray-900 dark:text-primary">
-          {currentPrice || "Not listed"}
-        </p>
+        {currentPrice && (
+          <p className="mt-2 text-sm font-bold text-gray-900 dark:text-primary">
+            {currentPrice}
+          </p>
+        )}
+
+        {isOwner && (
+          <p className="mt-2 text-sm font-bold text-gray-900 dark:text-primary">
+            Owned
+          </p>
+        )}
       </div>
     </div>
   );

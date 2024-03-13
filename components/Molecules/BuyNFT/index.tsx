@@ -6,11 +6,13 @@ import {
 } from "@constants/addresses";
 import {
   NFT,
+  useAddress,
   useContract,
   useValidDirectListings,
   useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import CreateListingForm from "../CreateListingForm";
 
 interface IProps {
@@ -18,6 +20,7 @@ interface IProps {
 }
 
 const BuyNFT = ({ nft }: IProps) => {
+  const address = useAddress();
   const { contract: marketplace, isLoading: loadingMarketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
@@ -36,27 +39,41 @@ const BuyNFT = ({ nft }: IProps) => {
     });
 
   const [bidValue, setBidValue] = useState(0);
-  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [openCreateListing, setOpenCreateListing] = useState<boolean>(false);
   const [currentPrice, setCurrentPrice] = useState<string | null>(null);
   const [loadedOnce, setLoadedOnce] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleBuyListing = async () => {
     let txResult;
+    setIsLoading(true);
 
-    //Add for auction section
-    if (auctionListing?.[0]) {
-      txResult = await marketplace?.englishAuctions.buyoutAuction(
-        auctionListing[0].id
+    try {
+      //Add for auction section
+      if (auctionListing?.[0]) {
+        txResult = await marketplace?.englishAuctions.buyoutAuction(
+          auctionListing[0].id
+        );
+      } else if (directListing?.[0]) {
+        txResult = await marketplace?.directListings.buyFromListing(
+          directListing[0].id,
+          1
+        );
+      } else {
+        setIsLoading(false);
+        throw new Error("No listing found");
+      }
+
+      toast.success("Purchased successfully");
+    } catch (err) {
+      toast.error(
+        "Purchase failed" + err?.data?.message ? `. ${err.data?.message}` : ""
       );
-    } else if (directListing?.[0]) {
-      txResult = await marketplace?.directListings.buyFromListing(
-        directListing[0].id,
-        1
-      );
-    } else {
-      throw new Error("No listing found");
+      setIsLoading(false);
+
+      throw new Error("Failed to purchase NFT", err);
     }
+    setIsLoading(false);
 
     return txResult;
   };
@@ -88,17 +105,19 @@ const BuyNFT = ({ nft }: IProps) => {
     setLoadedOnce(true);
   }, []);
 
+  const isOwner = nft?.owner === address;
+
   return (
     <div>
       <div className="pb-2">
         <div className="text-base text-gray-700 dark:text-gray-300/90">
-          {loadingMarketplace || !loadedOnce ? (
+          {loadingMarketplace || !loadedOnce || isLoading ? (
             <p>Loading...</p>
           ) : directListing && directListing[0] ? (
             <div className="mt-1 text-sm text-gray-700 dark:text-gray-300/90">
               <p>{currentPrice}</p>
 
-              {!isOwner && (
+              {!isOwner && !isLoading && (
                 <button
                   onClick={() => handleBuyListing()}
                   className=" w-full rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
@@ -128,7 +147,7 @@ const BuyNFT = ({ nft }: IProps) => {
             </div>
           ) : (
             <div>
-              <p>Price</p>
+              <strong className="font-bold">Price</strong>
               <p>Not Listed</p>
 
               {/* Modal is closed */}

@@ -17,6 +17,7 @@ import {
 import { ThirdwebStorage } from "@thirdweb-dev/storage";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "sonner";
 import CreateListingForm from "../CreateListingForm";
 
 const storage = new ThirdwebStorage({
@@ -25,11 +26,6 @@ const storage = new ThirdwebStorage({
 
 const SellNFTForm = () => {
   const router = useRouter();
-  const { contract: marketplace, isLoading: loadingMarketplace } = useContract(
-    MARKETPLACE_ADDRESS,
-    "marketplace-v3"
-  );
-
   const { contract: nftCollection } = useContract(
     NFT_COLLECTION_ADDRESS,
     "nft-collection"
@@ -70,7 +66,7 @@ const SellNFTForm = () => {
     setNft(nft);
 
     router.push("/mint#createDirectListing");
-    // Todo alert
+    toast.success("Successfully minted NFT");
   };
 
   return (
@@ -149,7 +145,7 @@ const SellNFTForm = () => {
       {nft && (
         <section
           id="#createDirectListing"
-          className="space-y-12 rounded-lg bg-gray-300/10 p-8"
+          className="mt-6 space-y-12 rounded-lg bg-gray-300/10 p-8"
         >
           <div className="max-w-md">
             <NFTCard nft={nft} />
