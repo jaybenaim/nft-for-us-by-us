@@ -1,8 +1,8 @@
 import Input from "@components/Atoms/Inputs/Input";
 import Textarea from "@components/Atoms/Inputs/TextArea";
 import Upload from "@components/Atoms/Inputs/Upload";
-import NFTCard from "@components/Atoms/NFTCard";
 import Spinner from "@components/Icons/Spinner";
+import NFTCard from "@components/Molecules/NFTCard";
 import {
   MARKETPLACE_ADDRESS,
   NFT_COLLECTION_ADDRESS,

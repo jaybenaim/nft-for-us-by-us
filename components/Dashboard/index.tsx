@@ -1,5 +1,5 @@
-import NFTCard from "@components/Atoms/NFTCard";
 import Skeleton from "@components/Atoms/Skeleton";
+import NFTCard from "@components/Molecules/NFTCard";
 import Modal from "@components/Organisms/Modal";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { useContract, useNFTs } from "@thirdweb-dev/react";
@@ -92,7 +92,7 @@ const Dashboard = () => {
             shallow
             className="after:content group relative mb-5 block w-full after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
           >
-            <NFTCard key={nft.metadata.id} nft={nft} />
+            <NFTCard key={nft.metadata.id} nft={nft} size="h-full w-full" />
           </Link>
         ))}
       </div>

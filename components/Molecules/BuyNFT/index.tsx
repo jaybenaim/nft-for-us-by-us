@@ -10,7 +10,7 @@ import {
   useValidDirectListings,
   useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateListingForm from "../CreateListingForm";
 
 interface IProps {
@@ -84,9 +84,13 @@ const BuyNFT = ({ nft }: IProps) => {
     return txResult;
   };
 
+  useEffect(() => {
+    setLoadedOnce(true);
+  }, []);
+
   return (
     <div>
-      <div className="px-4 pb-2">
+      <div className="pb-2">
         <div className="text-base text-gray-700 dark:text-gray-300/90">
           {loadingMarketplace || !loadedOnce ? (
             <p>Loading...</p>
@@ -97,7 +101,7 @@ const BuyNFT = ({ nft }: IProps) => {
               {!isOwner && (
                 <button
                   onClick={() => handleBuyListing()}
-                  className="mt-4 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
+                  className=" w-full rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
                 >
                   Buy
                 </button>

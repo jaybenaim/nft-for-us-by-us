@@ -25,10 +25,7 @@ const Buy: NextPage = () => {
           nft.metadata.name.toLowerCase().includes(searchValue))
     );
     setFilteredData(filteredData);
-    console.log("set searcg");
   };
-
-  console.log("data", data, filteredData);
 
   useEffect(() => {
     if (!filteredData && data) {
@@ -36,12 +33,12 @@ const Buy: NextPage = () => {
     }
   }, [filteredData, data]);
   return (
-    <div className="px-16 py-8">
+    <div className="px-8 py-8 lg:px-16">
       <h1 className="text-white">Buy NFTs</h1>
       <p>Browse and buy NFTs from this collection.</p>
 
-      <div className="grid w-full grid-cols-5 gap-8 lg:h-[600px]">
-        <div className="col-span-1 flex flex-col justify-between pt-4">
+      <div className="grid w-full grid-cols-5 gap-4 lg:h-[600px]">
+        <div className="col-span-full flex flex-col justify-between pt-4 lg:col-span-1">
           <div className="space-y-4">
             <Input
               icon={MagnifyingGlassIcon}
@@ -52,6 +49,7 @@ const Buy: NextPage = () => {
               type="search"
               handleOnChange={handleSearch}
             />
+
             <NFTFilters
               data={data}
               setFilteredData={setFilteredData}
@@ -59,14 +57,17 @@ const Buy: NextPage = () => {
             />
           </div>
 
-          <button
-            className="mt-4 w-1/2 rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
-            onClick={() => setFilteredData(data)}
-          >
-            Reset
-          </button>
+          {filteredData !== data && (
+            <button
+              className="mt-4 w-1/2 rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 dark:text-white"
+              onClick={() => setFilteredData(data)}
+            >
+              Reset
+            </button>
+          )}
         </div>
-        <div className="col-span-4">
+
+        <div className="col-span-full lg:col-span-4">
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-3 xl:gap-x-8">
             {(isLoading || filtersLoading) && (
               <>

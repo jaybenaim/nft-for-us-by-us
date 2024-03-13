@@ -30,7 +30,7 @@ const filters = [
 ];
 
 const NFTFilters = ({ data, setFilteredData, setFiltersLoading }: IProps) => {
-  const { contract: marketplace } = useContract(
+  const { contract: marketplace, isLoading: loadingMarketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
   );
@@ -48,7 +48,12 @@ const NFTFilters = ({ data, setFilteredData, setFiltersLoading }: IProps) => {
     }
     setFiltersLoading(true);
 
-    const filteredListingIds = listingsWithPrices.map((nft) =>
+    if (!listingsWithPrices) {
+      await getListings();
+      return handleApplyFilter();
+    }
+
+    const filteredListingIds = listingsWithPrices?.map((nft) =>
       +nft.currencyValuePerToken.displayValue >= min &&
       +nft.currencyValuePerToken.displayValue <= max
         ? nft.id
@@ -69,7 +74,7 @@ const NFTFilters = ({ data, setFilteredData, setFiltersLoading }: IProps) => {
   };
 
   useEffect(() => {
-    getListings();
+    !loadingMarketplace && getListings();
   }, []);
 
   return (
@@ -172,7 +177,7 @@ const NFTFilters = ({ data, setFilteredData, setFiltersLoading }: IProps) => {
           </Dialog>
         </Transition.Root>
 
-        <div className="pb-24">
+        <div className="lg:pb-24">
           {/* Filters */}
           <Disclosure as="div" className="border-t border-gray-200 py-6">
             {({ open }) => (

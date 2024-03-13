@@ -12,9 +12,10 @@ import { useEffect, useState } from "react";
 
 interface IProps {
   nft: NFT;
+  includeDescription?: boolean;
 }
 
-const NFTMetadata = ({ nft }: IProps) => {
+const NFTMetadata = ({ nft, includeDescription = false }: IProps) => {
   const { contract: marketplace } = useContract(
     MARKETPLACE_ADDRESS,
     "marketplace-v3"
@@ -51,6 +52,12 @@ const NFTMetadata = ({ nft }: IProps) => {
         <h3 className="text-sm font-semibold text-gray-700 dark:text-primary/90">
           {nft.metadata.name} #{nft.metadata.id}
         </h3>
+
+        {includeDescription && (
+          <p className="mt-2 text-sm font-bold text-gray-900 dark:text-primary">
+            {nft.metadata.description}
+          </p>
+        )}
 
         <p className="mt-2 text-sm font-bold text-gray-900 dark:text-primary">
           {currentPrice || "Not listed"}
