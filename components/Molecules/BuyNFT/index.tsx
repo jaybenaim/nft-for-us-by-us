@@ -122,8 +122,6 @@ const BuyNFT = ({ nft }: IProps) => {
             <p>Loading...</p>
           ) : directListing && directListing[0] ? (
             <div className="mt-1 text-sm text-gray-700 dark:text-gray-300/90">
-              <p>{currentPrice}</p>
-
               {!isOwner && !isLoading && (
                 <button
                   onClick={() => handleBuyListing()}
