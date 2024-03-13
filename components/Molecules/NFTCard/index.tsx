@@ -6,12 +6,14 @@ interface IProps {
   nft: NFT;
   imgOnly?: boolean;
   size?: string;
+  contain?: boolean;
 }
 
 const NFTCard = ({
   nft,
   imgOnly = true,
   size = "h-[450px] w-[450px]",
+  contain = true,
 }: IProps) => {
   return (
     <div className="group relative">
@@ -28,7 +30,8 @@ const NFTCard = ({
           src={nft.metadata.image}
           alt={nft.metadata.description}
           className={classNames(
-            imgOnly ? "rounded-lg object-cover" : "object-contain",
+            imgOnly ? "rounded-lg" : "",
+            contain ? "object-contain" : "object-cover",
             "h-full w-full object-center transition-all duration-300 will-change-auto group-hover:scale-110 lg:h-full lg:w-full"
           )}
         />

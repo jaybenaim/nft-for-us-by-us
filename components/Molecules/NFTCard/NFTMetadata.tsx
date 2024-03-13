@@ -7,7 +7,6 @@ import {
   useAddress,
   useContract,
   useValidDirectListings,
-  useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
 
@@ -29,11 +28,6 @@ const NFTMetadata = ({ nft, includeDescription = false }: IProps) => {
     tokenId: nft.metadata.id,
   });
 
-  const { data: auctionListing } = useValidEnglishAuctions(marketplace, {
-    tokenContract: NFT_COLLECTION_ADDRESS,
-    tokenId: nft.metadata.id,
-  });
-
   const [currentPrice, setCurrentPrice] = useState<string | null>(null);
 
   // Keep the price in state so it doesn't keep hiding while loading
@@ -41,10 +35,6 @@ const NFTMetadata = ({ nft, includeDescription = false }: IProps) => {
     if (directListing && directListing[0]) {
       setCurrentPrice(
         `${directListing[0]?.currencyValuePerToken.displayValue} ${directListing[0]?.currencyValuePerToken.symbol}`
-      );
-    } else if (auctionListing && auctionListing[0]) {
-      setCurrentPrice(
-        `${auctionListing[0]?.buyoutBidAmount} ${auctionListing[0]?.buyoutCurrencyValue}`
       );
     }
   }, [directListing]);

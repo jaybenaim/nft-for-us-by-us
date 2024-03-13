@@ -4,13 +4,19 @@ import NFTFilters from "@components/Molecules/NFTFilters";
 import NFTGrid from "@components/Molecules/NFTGrid";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { NFT, useContract, useNFTs } from "@thirdweb-dev/react";
-import { NextPage } from "next";
+import {
+  NFT,
+  useAddress,
+  useContract,
+  useOwnedNFTs,
+} from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
 
-const Buy: NextPage = () => {
-  const { contract } = useContract(NFT_COLLECTION_ADDRESS);
-  const { data, isLoading } = useNFTs(contract);
+const MyNfts = () => {
+  const address = useAddress();
+
+  const { contract: nftContract } = useContract(NFT_COLLECTION_ADDRESS);
+  const { data, isLoading } = useOwnedNFTs(nftContract, address);
   const [filteredData, setFilteredData] = useState<NFT[]>(data);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filtersLoading, setFiltersLoading] = useState<boolean>(false);
@@ -34,9 +40,8 @@ const Buy: NextPage = () => {
   }, [filteredData, data]);
 
   return (
-    <div className="px-8 py-8 lg:px-16">
-      <h1 className="text-lg font-bold text-white">Buy NFTs</h1>
-      <p>Browse and buy NFTs from this collection.</p>
+    <main className="mx-auto max-h-screen max-w-[1960px] p-4">
+      <h1 className="text-lg font-bold text-white">My NFTs</h1>
 
       <div className="grid w-full grid-cols-5 gap-4 lg:h-[600px]">
         <div className="col-span-full flex flex-col justify-between pt-4 lg:col-span-1">
@@ -68,7 +73,7 @@ const Buy: NextPage = () => {
           )}
         </div>
 
-        <div className="col-span-full lg:col-span-4">
+        <div className="col-span-full max-h-screen overflow-scroll lg:col-span-4">
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-3 xl:gap-x-8">
             {(isLoading || filtersLoading) && (
               <>
@@ -88,8 +93,8 @@ const Buy: NextPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Buy;
+export default MyNfts;

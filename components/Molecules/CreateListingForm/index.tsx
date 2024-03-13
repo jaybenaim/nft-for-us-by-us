@@ -92,6 +92,7 @@ const CreateListingForm = ({ nft }: IProps) => {
     }
   };
 
+  // Handle successful creation
   useEffect(() => {
     if (isSuccess) {
       toast.success("Created direct listing");
@@ -100,6 +101,7 @@ const CreateListingForm = ({ nft }: IProps) => {
     }
   }, [isSuccess]);
 
+  // Handle failed creation
   useEffect(() => {
     if (isError) {
       toast.error("Direct listing failed");

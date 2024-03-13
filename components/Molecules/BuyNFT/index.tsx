@@ -38,24 +38,24 @@ const BuyNFT = ({ nft }: IProps) => {
       tokenId: nft.metadata.id,
     });
 
-  const [bidValue, setBidValue] = useState(0);
+  const [bidValue, setBidValue] = useState<number>(0);
   const [openCreateListing, setOpenCreateListing] = useState<boolean>(false);
   const [currentPrice, setCurrentPrice] = useState<string | null>(null);
   const [loadedOnce, setLoadedOnce] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleBuyListing = async () => {
-    let txResult;
     setIsLoading(true);
 
     try {
       //Add for auction section
-      if (auctionListing?.[0]) {
-        txResult = await marketplace?.englishAuctions.buyoutAuction(
-          auctionListing[0].id
-        );
-      } else if (directListing?.[0]) {
-        txResult = await marketplace?.directListings.buyFromListing(
+      // if (auctionListing?.[0]) {
+      //   txResult = await marketplace?.englishAuctions.buyoutAuction(
+      //     auctionListing[0].id
+      //   );
+      // } else
+      if (directListing?.[0]) {
+        await marketplace?.directListings.buyFromListing(
           directListing[0].id,
           1
         );
@@ -74,8 +74,6 @@ const BuyNFT = ({ nft }: IProps) => {
       throw new Error("Failed to purchase NFT", err);
     }
     setIsLoading(false);
-
-    return txResult;
   };
 
   const handleCreateBid = async () => {
@@ -105,6 +103,15 @@ const BuyNFT = ({ nft }: IProps) => {
     setLoadedOnce(true);
   }, []);
 
+  // Keep the price in state so it doesn't keep hiding while loading
+  useEffect(() => {
+    if (directListing && directListing[0]) {
+      setCurrentPrice(
+        `${directListing[0]?.currencyValuePerToken.displayValue} ${directListing[0]?.currencyValuePerToken.symbol}`
+      );
+    }
+  }, [directListing]);
+
   const isOwner = nft?.owner === address;
 
   return (
@@ -127,6 +134,7 @@ const BuyNFT = ({ nft }: IProps) => {
               )}
             </div>
           ) : auctionListing && auctionListing[0] ? (
+            // TBD
             <div>
               <p>Minimum Bid</p>
               <p>

@@ -1,4 +1,3 @@
-"use client";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -8,8 +7,8 @@ interface IProps {
 }
 
 const AuthProvider = ({ children }: IProps) => {
-  const [backgroundImage, setBackgroundImage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const address = useAddress();
 
   useEffect(() => {

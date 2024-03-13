@@ -1,31 +1,101 @@
-# Next.js & Cloudinary example app
+## Table of Contents
 
-This example shows how to create an image gallery site using Next.js, [Cloudinary](https://cloudinary.com), and [Tailwind](https://tailwindcss.com).
+- [Demo](https://patient-dashboard-delta.vercel.app)
+- [Tech Stack](#tech-stack)
+- [How it works](#how-it-works)
+- [Getting Started Locally](#getting-started-locally)
+- [Api Helpers](#api-helpers)
+- [Interfaces](#interfaces)
+- [Types](#types)
+- [Auth Class](#auth-class)
+  - [Class Structure](#class-structure)
+  - [Auth Class Methods](#auth-class-methods)
+    - [handleError](#handleerror-err)
+    - [loginWithEmail](#loginwithemail-email-password)
+    - [loginWithProvider](#loginwithprovider)
+    - [createUserWithEmail](#createuserwithemail-email-password)
+    - [signup](#signup-provider-google--email-email-password)
+    - [signOut](#signout)
+    - [get](#get-id)
+    - [create](#create-id-email-extrafields-iuser)
+- [Patient Class](#patient-class)
+  - [Class Structure](#class-structure-1)
+  - [Patient Class Methods](#patient-class-methods)
+    - [set](#set-patient-ipatient)
+    - [get](#get-id-string)
+    - [create](#create-patientdata-ipatient)
+    - [update](#update-patientdata-ipatient)
+    - [delete](#delete-patientdata-ipatient)
+    - [list](#list)
+- [TODO](#todo)
+  - [Features](#features)
 
-## Deploy your own
+## Demo
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or view the demo [here](https://nextconf-images.vercel.app/)
+View the [Demo](https://patient-dashboard-delta.vercel.app)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-cloudinary&project-name=nextjs-image-gallery&repository-name=with-cloudinary&env=NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET,CLOUDINARY_FOLDER&envDescription=API%20Keys%20from%20Cloudinary%20needed%20to%20run%20this%20application.)
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The NFT Marketplace is built using the following technologies:
 
-## How to use
+### Front-end
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example::
+- [Next.js](https://nextjs.org/): A React framework for building server-side rendered and statically generated web applications.
+- [TypeScript](https://www.typescriptlang.org/): A typed superset of JavaScript that adds static types to the language.
+- [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework that provides a set of pre-designed styles and classes for building responsive user interfaces.
+
+### Authentication
+
+- [Thirdweb Authentication](https://portal.thirdweb.com/connect/auth): Thirdwebs's authentication service that provides easy-to-use authentication for our web app. This allows you to connect your MetaMask wallet with a click of a button.
+
+### Deployment
+
+- [Vercel](https://vercel.com/): A platform for deploying and hosting web applications. We use Vercel to deploy the Patient Management Dashboard.
+
+View the [Demo](https://patient-dashboard-delta.vercel.app)
+
+### Version Control
+
+- [Git](https://git-scm.com/): A distributed version control system used for tracking changes in our codebase and collaborating with multiple developers.
+
+## How it works
+
+1. Connect your wallet [Here](https://patient-dashboard-delta.vercel.app)
+2. Head over to [Mint](https://patient-dashboard-delta.vercel.app/mint) to mint your own NFT [preview](/mint-preview.png)
+3. Once completed you can now create a direct listing below the minted NFT [preview](dl-preview.png)
+4. You can now view your listing along with all the other market listed NFT's in the [Market](https://patient-dashboard-delta.vercel.app/market)
+5. You can also view your own listings in the [My NFT's Tab](https://patient-dashboard-delta.vercel.app/my-nfts)
+
+## Getting Started Locally
+
+First, install the dependencies:
 
 ```bash
- npx create-next-app --example with-cloudinary nextjs-image-gallery
+yarn
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Next add your firebase config to your .env.local file:
+
+```sh
+NEXT_PUBLIC_NATIVE_TOKEN_ADDRESS=""
+NEXT_PUBLIC_CONTRACT_ADDRESS=""
+NEXT_PUBLIC_THIRD_WEB_CLIENT_ID=""
+NEXT_PUBLIC_THIRD_WEB_SECRET_KEY=""
+
+NEXT_PUBLIC_MARKETPLACE_ADDRESS=""
+NEXT_PUBLIC_NFT_COLLECTION_ADDRESS=""
+```
+
+Start the project:
 
 ```bash
-yarn create next-app --example with-cloudinary nextjs-image-gallery
+yarn dev
 ```
 
-```bash
-pnpm create next-app --example with-cloudinary nextjs-image-gallery
-```
+### TODO
 
-## References
-
-- Cloudinary API: https://cloudinary.com/documentation/transformation_reference
+- Implement auctioning
+- Allow other markets to be listed
+- Setup shopping cart to add NFT's to a cart and checkout

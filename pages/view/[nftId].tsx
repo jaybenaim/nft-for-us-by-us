@@ -25,7 +25,7 @@ const NFTDetail: NextPage = () => {
         <meta name="twitter:image" content={nft?.metadata.image} />
       </Head>
 
-      <main className="mx-auto max-h-[480px] p-16">
+      <main className="mx-auto max-h-[480px] p-4 lg:p-16">
         {isLoading ? (
           <div className="flex h-screen w-screen items-center justify-center">
             <Spinner />
