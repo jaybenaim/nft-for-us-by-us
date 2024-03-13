@@ -54,7 +54,13 @@ const Dashboard = () => {
             shallow
             className="after:content group relative mb-5 block w-full after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
           >
-            <NFTCard key={nft.metadata.id} nft={nft} size="h-full w-full" />
+            <NFTCard
+              key={nft.metadata.id}
+              nft={nft}
+              size="h-[629px] w-full"
+              contain={false}
+              border
+            />
           </Link>
         ))}
       </div>

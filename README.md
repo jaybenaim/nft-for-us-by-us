@@ -1,6 +1,6 @@
 ## Table of Contents
 
-- [Demo](https://patient-dashboard-delta.vercel.app)
+- [Demo](https://nft-for-us-by-us.vercel.app/)
 - [Tech Stack](#tech-stack)
 - [How it works](#how-it-works)
 - [Getting Started Locally](#getting-started-locally)
@@ -8,7 +8,7 @@
 
 ## Demo
 
-View the [Demo](https://patient-dashboard-delta.vercel.app)
+View the [Demo](https://nft-for-us-by-us.vercel.app/)
 
 ## Tech Stack
 
@@ -28,7 +28,7 @@ The NFT Marketplace is built using the following technologies:
 
 - [Vercel](https://vercel.com/): A platform for deploying and hosting web applications. We use Vercel to deploy the Patient Management Dashboard.
 
-View the [Demo](https://patient-dashboard-delta.vercel.app)
+View the [Demo](https://nft-for-us-by-us.vercel.app/)
 
 ### Version Control
 
@@ -36,11 +36,11 @@ View the [Demo](https://patient-dashboard-delta.vercel.app)
 
 ## How it works
 
-1. Connect your wallet [Here](https://patient-dashboard-delta.vercel.app)
-2. Head over to [Mint](https://patient-dashboard-delta.vercel.app/mint) to mint your own NFT [preview](/mint-preview.png)
-3. Once completed you can now create a direct listing below the minted NFT [preview](dl-preview.png)
-4. You can now view your listing along with all the other market listed NFT's in the [Market](https://patient-dashboard-delta.vercel.app/market)
-5. You can also view your own listings in the [My NFT's Tab](https://patient-dashboard-delta.vercel.app/my-nfts)
+1. Connect your wallet [Here](https://nft-for-us-by-us.vercel.app/)
+2. Head over to [Mint](https://nft-for-us-by-us.vercel.app//mint) to mint your own NFT ![preview](/mint-preview.png)
+3. Once completed you can now create a direct listing below the minted NFT ![preview](/dl-preview.png)
+4. You can now view your listing along with all the other market listed NFT's in the [Market](https://nft-for-us-by-us.vercel.app/market)
+5. You can also view your own listings in the [My NFT's Tab](https://nft-for-us-by-us.vercel.app/my-nfts)
 
 ## Getting Started Locally
 

@@ -7,6 +7,7 @@ interface IProps {
   imgOnly?: boolean;
   size?: string;
   contain?: boolean;
+  border?: boolean;
 }
 
 const NFTCard = ({
@@ -14,15 +15,17 @@ const NFTCard = ({
   imgOnly = true,
   size = "h-[450px] w-[450px]",
   contain = true,
+  border = false,
 }: IProps) => {
   return (
     <div className="group relative">
       <div
         className={classNames(
-          "aspect-h-1 aspect-w-1 lg:aspect-none flex justify-center overflow-hidden dark:border-gray-700/60 dark:text-gray-300/90",
-          imgOnly
-            ? "rounded-lg border-none"
-            : "rounded-t-lg border-x-[0.05px] border-t-[0.05px]",
+          "aspect-h-1 aspect-w-1 lg:aspect-none flex justify-center overflow-hidden  dark:text-gray-300/90",
+          border
+            ? "border-x-[0.05px] border-t-[0.05px] dark:border-gray-700/60"
+            : " border-none",
+          imgOnly ? "rounded-lg" : "rounded-t-lg",
           size
         )}
       >
