@@ -37,8 +37,8 @@ View the [Demo](https://nft-for-us-by-us.vercel.app/)
 ## How it works
 
 1. Connect your wallet [Here](https://nft-for-us-by-us.vercel.app/)
-2. Head over to [Mint](https://nft-for-us-by-us.vercel.app//mint) to mint your own NFT ![preview](/mint-preview.png)
-3. Once completed you can now create a direct listing below the minted NFT ![preview](/dl-preview.png)
+2. Head over to [Mint](https://nft-for-us-by-us.vercel.app//mint) to mint your own NFT ![preview](/public/mint-preview.png)
+3. Once completed you can now create a direct listing below the minted NFT ![preview](/public/dl-preview.png)
 4. You can now view your listing along with all the other market listed NFT's in the [Market](https://nft-for-us-by-us.vercel.app/market)
 5. You can also view your own listings in the [My NFT's Tab](https://nft-for-us-by-us.vercel.app/my-nfts)
 
