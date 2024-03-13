@@ -3,6 +3,7 @@ import AuthProvider from "@context/AuthProvider";
 import "@styles/index.css";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import type { AppType } from "next/dist/shared/lib/utils";
+import { Toaster } from "sonner";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -13,6 +14,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     >
       <AuthProvider>
         <Layout>
+          <Toaster />
           <Component {...pageProps} />
         </Layout>
       </AuthProvider>

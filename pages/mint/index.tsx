@@ -1,12 +1,12 @@
-import SellNFTForm from "@components/Molecules/MintNFTForm";
+import MintNFTForm from "@components/Molecules/MintNFTForm";
 import { NextPage } from "next";
 
-const Sell: NextPage = () => {
+const MintPage: NextPage = () => {
   return (
-    <div className="p-16">
-      <SellNFTForm />
+    <div className="p-4 lg:p-16">
+      <MintNFTForm />
     </div>
   );
 };
 
-export default Sell;
+export default MintPage;

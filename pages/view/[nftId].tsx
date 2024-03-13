@@ -1,6 +1,7 @@
-import NFTCard from "@components/Atoms/NFTCard";
-import NFTMetadata from "@components/Atoms/NFTCard/NFTMetadata";
 import Spinner from "@components/Icons/Spinner";
+import BuyNFT from "@components/Molecules/BuyNFT";
+import NFTCard from "@components/Molecules/NFTCard";
+import NFTMetadata from "@components/Molecules/NFTCard/NFTMetadata";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { useContract, useNFTs } from "@thirdweb-dev/react";
 import type { NextPage } from "next";
@@ -24,19 +25,20 @@ const NFTDetail: NextPage = () => {
         <meta name="twitter:image" content={nft?.metadata.image} />
       </Head>
 
-      <main className="mx-auto max-h-[480px] p-16">
+      <main className="mx-auto max-h-[480px] p-4 lg:p-16">
         {isLoading ? (
           <div className="flex h-screen w-screen items-center justify-center">
             <Spinner />
           </div>
         ) : (
-          <div className="flex">
-            <div className="w-1/3">
-              <NFTCard nft={nft} />
+          <div className="flex flex-col gap-8 lg:flex-row">
+            <div className="flex justify-center first-of-type:*:rounded-lg">
+              <NFTCard nft={nft} imgOnly />
             </div>
 
-            <div>
+            <div className="space-y-4 first-of-type:*:rounded-lg">
               <NFTMetadata nft={nft} />
+              <BuyNFT nft={nft} />
             </div>
           </div>
         )}

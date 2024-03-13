@@ -1,51 +1,16 @@
-import NFTCard from "@components/Atoms/NFTCard";
 import Skeleton from "@components/Atoms/Skeleton";
-import Modal from "@components/Organisms/Modal";
+import NFTCard from "@components/Molecules/NFTCard";
 import { NFT_COLLECTION_ADDRESS } from "@constants/addresses";
 import { useContract, useNFTs } from "@thirdweb-dev/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { useLastViewedPhoto } from "utils/useLastViewedPhoto";
 
 const Dashboard = () => {
-  const router = useRouter();
-  const { photoId } = router.query;
-
   const { contract: nftContract } = useContract(NFT_COLLECTION_ADDRESS);
   const { data, isLoading } = useNFTs(nftContract);
 
-  const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
-
-  const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    // This effect keeps track of the last viewed photo in the modal to keep the index page in sync when the user navigates back
-    if (lastViewedPhoto && !photoId) {
-      lastViewedPhotoRef.current.scrollIntoView({ block: "center" });
-      setLastViewedPhoto(null);
-    }
-  }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
-
   return (
     <main className="mx-auto max-w-[1960px] p-4">
-      {photoId && (
-        <Modal
-          images={data?.map((nft, index) => ({
-            height: "100",
-            width: "100",
-            id: index,
-            format: "",
-            public_id: nft?.metadata?.id || "",
-            blurDataUrl: "",
-          }))}
-          onClose={() => {
-            setLastViewedPhoto(photoId);
-          }}
-        />
-      )}
-
       <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
         <div className="after:content relative mb-5 flex h-[629px] flex-col items-center justify-end gap-4 overflow-hidden rounded-lg bg-white/10 px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
           <div className="absolute inset-0 flex items-center justify-center opacity-20">
@@ -75,6 +40,10 @@ const Dashboard = () => {
             <Skeleton />
 
             <Skeleton />
+
+            <Skeleton />
+
+            <Skeleton />
           </div>
         )}
 
@@ -82,13 +51,10 @@ const Dashboard = () => {
           <Link
             key={nft?.metadata?.id}
             href={`/view/${nft?.metadata?.id}`}
-            ref={
-              nft?.metadata?.id === lastViewedPhoto ? lastViewedPhotoRef : null
-            }
             shallow
             className="after:content group relative mb-5 block w-full after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
           >
-            <NFTCard key={nft.metadata.id} nft={nft} />
+            <NFTCard key={nft.metadata.id} nft={nft} size="h-full w-full" />
           </Link>
         ))}
       </div>

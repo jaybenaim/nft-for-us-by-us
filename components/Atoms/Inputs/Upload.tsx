@@ -9,7 +9,7 @@ interface IProps {
 
 const Upload = ({ label, id, handleOnChange }: IProps) => {
   return (
-    <div className="col-span-full">
+    <div className="col-span-3">
       <label
         htmlFor="upload-label"
         className="block text-sm font-medium leading-6 text-white"

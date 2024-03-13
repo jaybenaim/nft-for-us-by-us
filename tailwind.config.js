@@ -18,6 +18,9 @@ module.exports = {
         wide: { raw: "(min-aspect-ratio: 3 / 2)" },
         "taller-than-854": { raw: "(min-height: 854px)" },
       },
+      colors: {
+        primary: "#d1d5db",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
