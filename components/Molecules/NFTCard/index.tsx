@@ -22,9 +22,7 @@ const NFTCard = ({
       <div
         className={classNames(
           "aspect-h-1 aspect-w-1 lg:aspect-none flex justify-center overflow-hidden  dark:text-gray-300/90",
-          border
-            ? "border-x-[0.05px] border-t-[0.05px] dark:border-gray-700/60"
-            : " border-none",
+          border ? "border-[0.05px] dark:border-gray-700/60" : "border-none",
           imgOnly ? "rounded-lg" : "rounded-t-lg",
           size
         )}
@@ -35,7 +33,7 @@ const NFTCard = ({
           className={classNames(
             imgOnly ? "rounded-lg" : "",
             contain ? "object-contain" : "object-cover",
-            "h-full w-full object-center transition-all duration-300 will-change-auto group-hover:scale-110 lg:h-full lg:w-full"
+            "w-full object-center transition-all duration-300 will-change-auto group-hover:scale-110"
           )}
         />
       </div>

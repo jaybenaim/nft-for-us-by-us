@@ -23,14 +23,24 @@ const NFTGrid = ({
         data.map((nft) =>
           !overrideOnclickBehavior ? (
             <Link href={`/view/${nft.metadata.id}`} key={nft.metadata.id}>
-              <NFTCard nft={nft} imgOnly={false} size="w-full max-h-[280px]" />
+              <NFTCard
+                nft={nft}
+                imgOnly={false}
+                size="w-full max-h-[280px]"
+                contain={false}
+              />
             </Link>
           ) : (
             <button
               key={nft.metadata.id}
               onClick={() => overrideOnclickBehavior(nft)}
             >
-              <NFTCard nft={nft} imgOnly={false} size="w-full max-h-[280px]" />
+              <NFTCard
+                nft={nft}
+                imgOnly={false}
+                size="w-full max-h-[280px]"
+                contain={false}
+              />
             </button>
           )
         )

@@ -33,7 +33,7 @@ const NFTDetail: NextPage = () => {
         ) : (
           <div className="flex flex-col gap-8 lg:flex-row">
             <div className="flex justify-center first-of-type:*:rounded-lg">
-              <NFTCard nft={nft} imgOnly />
+              <NFTCard nft={nft} imgOnly contain size="w-[360px]" />
             </div>
 
             <div className="space-y-4 first-of-type:*:rounded-lg">

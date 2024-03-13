@@ -38,7 +38,7 @@ const Buy: NextPage = () => {
       <h1 className="text-lg font-bold text-white">Buy NFTs</h1>
       <p>Browse and buy NFTs from this collection.</p>
 
-      <div className="grid w-full grid-cols-5 gap-4 lg:h-[600px] ">
+      <div className="grid w-full grid-cols-5 gap-4 lg:h-[600px]">
         <div className="col-span-full flex flex-col justify-between pt-4 lg:col-span-1">
           <div className="space-y-4">
             <Input

@@ -10,7 +10,7 @@ const Dashboard = () => {
   const { data, isLoading } = useNFTs(nftContract);
 
   return (
-    <main className="mx-auto max-w-[1960px] p-4">
+    <main className="max-w-9xl mx-auto p-4 px-16">
       <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
         <div className="after:content relative mb-5 flex h-[629px] flex-col items-center justify-end gap-4 overflow-hidden rounded-lg bg-white/10 px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
           <div className="absolute inset-0 flex items-center justify-center opacity-20">
@@ -57,7 +57,7 @@ const Dashboard = () => {
             <NFTCard
               key={nft.metadata.id}
               nft={nft}
-              size="h-[629px] w-full"
+              size="h-[420px] w-full"
               contain={false}
               border
             />
